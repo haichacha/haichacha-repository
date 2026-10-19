@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>我的收藏</title>
+<style>
+:root{--bg:#eaf3e7;--card:#f7fbf5;--ink:#2d3b2f;--sub:#6b7d6d;--line:#d3e2cf;--accent:#5f8a64;--accent-d:#4a7050;--tag:#e3eee0;--field:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b261d;--card:#243026;--ink:#e3eee0;--sub:#9db39f;--line:#364a39;--accent:#6f9f75;--accent-d:#86b58c;--tag:#2e3f31;--field:#1b261d}}
+:root[data-theme="dark"]{--bg:#1b261d;--card:#243026;--ink:#e3eee0;--sub:#9db39f;--line:#364a39;--accent:#6f9f75;--accent-d:#86b58c;--tag:#2e3f31;--field:#1b261d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:56px 20px 40px}
+h1{font-size:28px;font-weight:600;letter-spacing:.08em;margin:0}
+.sub{color:var(--sub);font-size:14px;margin:6px 0 28px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:28px}
+.tabs{display:flex;gap:4px}
+.tab{border:0;background:none;color:var(--sub);font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;cursor:pointer}
+.tab.on{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.search{flex:1;min-width:140px;border:0;border-bottom:1px solid var(--line);background:none;font:inherit;font-size:14px;color:var(--ink);padding:6px 2px;outline:none}
+.search:focus{border-color:var(--accent)}
+.btn{border:0;background:var(--accent);color:#fff;font:inherit;font-size:14px;padding:8px 18px;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--accent-d)}
+.btn.ghost{background:none;color:var(--sub);box-shadow:0 0 0 1px var(--line)}
+.btn.ghost:hover{color:var(--ink)}
+.grid{columns:3 260px;column-gap:18px}
+.item{break-inside:avoid;background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 18px;overflow:hidden;position:relative}
+.item img{display:block;width:100%;cursor:zoom-in}
+.body{padding:16px 18px 14px}
+.title{font-weight:600;margin:0 0 6px}
+.text{margin:0;white-space:pre-wrap;word-break:break-word;font-size:15px}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--sub)}
+.tag{background:var(--tag);border-radius:999px;padding:1px 10px}
+.del{position:absolute;top:8px;right:8px;border:0;background:var(--card);color:var(--sub);width:26px;height:26px;border-radius:50%;cursor:pointer;opacity:0;transition:opacity .15s}
+.item:hover .del{opacity:1}
+@media (hover:none){.del{opacity:1}}
+.empty{text-align:center;color:var(--sub);padding:60px 0}
+footer{display:flex;gap:10px;justify-content:center;margin-top:32px}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:24px;width:min(460px,92vw)}
+dialog::backdrop{background:rgba(45,59,47,.35)}
+dialog h2{margin:0 0 16px;font-size:18px}
+.f{display:block;width:100%;border:1px solid var(--line);background:var(--field);border-radius:10px;font:inherit;font-size:15px;color:var(--ink);padding:9px 12px;margin-bottom:12px;outline:none}
+.f:focus{border-color:var(--accent)}
+textarea.f{min-height:110px;resize:vertical}
+.prev{max-width:100%;max-height:180px;border-radius:10px;margin-bottom:12px;display:none}
+.row{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+#lb{padding:0;background:none;border:0;width:auto;max-width:94vw}
+#lb img{max-width:94vw;max-height:88vh;border-radius:12px;display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>我的收藏</h1>
+  <p class="sub" id="count"></p>
+  <div class="bar">
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-k="all">全部</button>
+      <button class="tab" data-k="text">文字</button>
+      <button class="tab" data-k="img">图片</button>
+    </div>
+    <input class="search" id="q" placeholder="搜索内容或标签">
+    <button class="btn" id="add">＋ 添加</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>还没有内容，点右上角“添加”开始收藏。</div>
+  <footer>
+    <button class="btn ghost" id="exp">导出备份</button>
+    <button class="btn ghost" id="imp">导入备份</button>
+    <input type="file" id="impf" accept="application/json" hidden>
+  </footer>
+</div>
+
+<dialog id="dlg">
+  <h2>添加收藏</h2>
+  <input class="f" id="ft" placeholder="标题（可选）">
+  <textarea class="f" id="fx" placeholder="写点文字…"></textarea>
+  <input class="f" id="fg" placeholder="标签（可选）">
+  <img class="prev" id="prev" alt="">
+  <input type="file" id="fi" accept="image/*" class="f">
+  <div class="row">
+    <button class="btn ghost" id="cancel">取消</button>
+    <button class="btn" id="save">保存</button>
+  </div>
+</dialog>
+<dialog id="lb"><img id="lbi" alt=""></dialog>
+
+<script>
+(function(){
+  var KEY='my-collection-v1', items=[], filter='all', imgData='';
+  var $=function(id){return document.getElementById(id)};
+
+  function load(){
+    try{items=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){items=null}
+    if(!Array.isArray(items)){
+      items=[
+        {id:'s1',title:'欢迎',text:'这里是你的个人收藏夹。\n可以记录一句话、一段想法，也可以收藏图片。',tag:'示例',img:'',t:Date.now()},
+        {id:'s2',title:'小提示',text:'内容保存在当前浏览器里。换设备前，请先点页面底部的“导出备份”。',tag:'示例',img:'',t:Date.now()-1}
+      ];
+    }
+  }
+  function persist(){
+    try{localStorage.setItem(KEY,JSON.stringify(items));return true}
+    catch(e){alert('保存失败：浏览器存储空间已满。请先导出备份，再删除一些图片。');return false}
+  }
+  function fmt(t){var d=new Date(t);return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()}
+
+  function render(){
+    var q=$('q').value.trim().toLowerCase(), g=$('grid');
+    g.innerHTML='';
+    var list=items.filter(function(it){
+      if(filter==='text'&&it.img)return false;
+      if(filter==='img'&&!it.img)return false;
+      return !q||((it.title||'')+(it.text||'')+(it.tag||'')).toLowerCase().indexOf(q)>-1;
+    }).sort(function(a,b){return b.t-a.t});
+    list.forEach(function(it){
+      var c=document.createElement('article');c.className='item';
+      if(it.img){var im=document.createElement('img');im.src=it.img;im.alt=it.title||'';
+        im.onclick=function(){$('lbi').src=it.img;$('lb').showModal()};c.appendChild(im)}
+      var b=document.createElement('div');b.className='body';
+      if(it.title){var h=document.createElement('p');h.className='title';h.textContent=it.title;b.appendChild(h)}
+      if(it.text){var p=document.createElement('p');p.className='text';p.textContent=it.text;b.appendChild(p)}
+      var m=document.createElement('div');m.className='meta';
+      var d=document.createElement('span');d.textContent=fmt(it.t);m.appendChild(d);
+      if(it.tag){var tg=document.createElement('span');tg.className='tag';tg.textContent=it.tag;m.appendChild(tg)}
+      b.appendChild(m);c.appendChild(b);
+      var x=document.createElement('button');x.className='del';x.textContent='×';x.title='删除';
+      x.onclick=function(){if(confirm('删除这条收藏？')){items=items.filter(function(i){return i.id!==it.id});persist();render()}};
+      c.appendChild(x);g.appendChild(c);
+    });
+    $('empty').hidden=list.length>0;
+    $('count').textContent='共 '+items.length+' 条收藏';
+  }
+
+  document.querySelectorAll('.tab').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on');filter=b.dataset.k;render();
+    };
+  });
+  $('q').oninput=render;
+
+  function resetForm(){['ft','fx','fg','fi'].forEach(function(i){$(i).value=''});imgData='';$('prev').style.display='none'}
+  $('add').onclick=function(){resetForm();$('dlg').showModal()};
+  $('cancel').onclick=function(){$('dlg').close()};
+
+  $('fi').onchange=function(e){
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(){
+      var im=new Image();
+      im.onload=function(){
+        var s=Math.min(1,1000/Math.max(im.width,im.height)),c=document.createElement('canvas');
+        c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);
+        c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+        imgData=c.toDataURL('image/jpeg',.8);
+        $('prev').src=imgData;$('prev').style.display='block';
+      };
+      im.src=r.result;
+    };
+    r.readAsDataURL(f);
+  };
+
+  $('save').onclick=function(){
+    var t=$('ft').value.trim(),x=$('fx').value.trim(),g=$('fg').value.trim();
+    if(!t&&!x&&!imgData){alert('请至少填写文字或选择一张图片');return}
+    items.push({id:Date.now()+''+Math.floor(Math.random()*1000),title:t,text:x,tag:g,img:imgData,t:Date.now()});
+    if(persist()){$('dlg').close();render()}else{items.pop()}
+  };
+
+  $('lb').onclick=function(){$('lb').close()};
+
+  $('exp').onclick=function(){
+    var json=JSON.stringify(items);
+    function fallback(){
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));
+      a.download='收藏备份.json';a.click();
+    }
+    if(window.claude&&claude.use){
+      claude.use('downloads').then(function(d){
+        if(!d){fallback();return}
+        d.save({filename:'收藏备份.json',data:json}).catch(function(){});
+      }).catch(fallback);
+    }else fallback();
+  };
+  $('imp').onclick=function(){$('impf').click()};
+  $('impf').onchange=function(e){
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);if(!Array.isArray(d))throw 0;
+        if(confirm('导入将覆盖当前所有收藏，继续吗？')){items=d;persist();render()}
+      }catch(err){alert('备份文件格式不正确')}
+    };
+    r.readAsText(f);e.target.value='';
+  };
+
+  load();render();
+})();
+</script>
+</body>
+</html>
