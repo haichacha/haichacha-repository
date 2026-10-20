@@ -363,7 +363,7 @@ dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
     r.readAsText(f);e.target.value='';
   };
 
-  try{RELAY=localStorage.getItem('relay-url')||''}catch(e){}
+  try{RELAY=localStorage.getItem('relay-url')||'https://zhanghaicha.wang520370.workers.dev'}catch(e){}
   $('cfg').onclick=function(){
     var v=prompt('填入中转地址（以 https:// 开头）。留空则清除：',RELAY);
     if(v===null)return;
