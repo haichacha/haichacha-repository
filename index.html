@@ -10,61 +10,91 @@
 :root[data-theme="dark"]{--bg:#1b261d;--card:#243026;--ink:#e3eee0;--sub:#9db39f;--line:#364a39;--accent:#6f9f75;--accent-d:#86b58c;--tag:#2e3f31;--field:#1b261d}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif}
-.wrap{max-width:1000px;margin:0 auto;padding:56px 20px 40px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:48px 18px 40px}
 h1{font-size:28px;font-weight:600;letter-spacing:.08em;margin:0}
-.sub{color:var(--sub);font-size:14px;margin:6px 0 28px}
-.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:28px}
-.tabs{display:flex;gap:4px}
-.tab{border:0;background:none;color:var(--sub);font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;cursor:pointer}
+.sub{color:var(--sub);font-size:14px;margin:6px 0 24px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:28px}
+.tb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
+.tb button,.btn{border:0;font:inherit;font-size:14px;cursor:pointer}
+.tb button{background:none;color:var(--ink);padding:3px 10px;border-radius:8px;box-shadow:0 0 0 1px var(--line)}
+.tb button:hover{background:var(--tag)}
+.tb .dot{width:20px;height:20px;padding:0;border-radius:50%;border:2px solid var(--card)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+#szw{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--sub)}
+#szw[hidden]{display:none}
+#sz{width:110px;accent-color:var(--accent)}
+#ed{min-height:150px;padding:16px 18px;outline:none;line-height:1.85;word-break:break-word}
+#ed:empty:before{content:attr(data-ph);color:var(--sub)}
+#ed img,.rich img{max-width:100%;height:auto;border-radius:8px;vertical-align:bottom}
+#ed img{cursor:pointer}
+#ed img.sel{outline:2px solid var(--accent);outline-offset:2px}
+.foot{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--sub)}
+.btn{background:var(--accent);color:#fff;padding:8px 20px;border-radius:999px}
+.btn:hover{background:var(--accent-d)}
+.btn.ghost{background:none;color:var(--sub);box-shadow:0 0 0 1px var(--line);padding:5px 14px;font-size:13px}
+.btn.ghost:hover{color:var(--ink)}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:20px}
+.tab{border:0;background:none;color:var(--sub);font:inherit;font-size:14px;padding:5px 14px;border-radius:999px;cursor:pointer}
 .tab.on{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
 .search{flex:1;min-width:140px;border:0;border-bottom:1px solid var(--line);background:none;font:inherit;font-size:14px;color:var(--ink);padding:6px 2px;outline:none}
-.search:focus{border-color:var(--accent)}
-.btn{border:0;background:var(--accent);color:#fff;font:inherit;font-size:14px;padding:8px 18px;border-radius:999px;cursor:pointer}
-.btn:hover{background:var(--accent-d)}
-.btn.ghost{background:none;color:var(--sub);box-shadow:0 0 0 1px var(--line)}
-.btn.ghost:hover{color:var(--ink)}
-.grid{columns:3 260px;column-gap:18px}
-.item{break-inside:avoid;background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 18px;overflow:hidden;position:relative}
-.item img{display:block;width:100%;cursor:zoom-in}
-.body{padding:16px 18px 14px}
-.title{font-weight:600;margin:0 0 6px}
-.text{margin:0;white-space:pre-wrap;word-break:break-word;font-size:15px}
-.meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--sub)}
-.tag{background:var(--tag);border-radius:999px;padding:1px 10px}
-.del{position:absolute;top:8px;right:8px;border:0;background:var(--card);color:var(--sub);width:26px;height:26px;border-radius:50%;cursor:pointer;opacity:0;transition:opacity .15s}
-.item:hover .del{opacity:1}
-@media (hover:none){.del{opacity:1}}
-.empty{text-align:center;color:var(--sub);padding:60px 0}
-footer{display:flex;gap:10px;justify-content:center;margin-top:32px}
-dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:24px;width:min(460px,92vw)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:18px;overflow:hidden}
+.tabs3{display:flex;gap:4px;padding:10px 14px 0}
+.snap{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.snap::-webkit-scrollbar{display:none}
+.panel{flex:0 0 100%;min-width:0;scroll-snap-align:start;padding:16px 20px;word-break:break-word}
+.en p,.mix .enl{font:17px/1.8 Georgia,"Times New Roman",serif;margin:0 0 12px}
+.mix .zhl{color:var(--sub);font-size:14px;margin:14px 0 2px}
+.mix .enl{margin:0 0 6px}
+.meta{display:flex;justify-content:space-between;align-items:center;padding:0 20px 14px;font-size:12px;color:var(--sub)}
+.empty{text-align:center;color:var(--sub);padding:40px 0}
+footer{display:flex;gap:10px;justify-content:center;margin-top:28px}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:24px;width:min(480px,92vw)}
 dialog::backdrop{background:rgba(45,59,47,.35)}
-dialog h2{margin:0 0 16px;font-size:18px}
-.f{display:block;width:100%;border:1px solid var(--line);background:var(--field);border-radius:10px;font:inherit;font-size:15px;color:var(--ink);padding:9px 12px;margin-bottom:12px;outline:none}
-.f:focus{border-color:var(--accent)}
-textarea.f{min-height:110px;resize:vertical}
-.prev{max-width:100%;max-height:180px;border-radius:10px;margin-bottom:12px;display:none}
+dialog h2{margin:0 0 10px;font-size:18px}
+dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
+.f{display:block;width:100%;border:1px solid var(--line);background:var(--field);border-radius:10px;font:inherit;font-size:14px;color:var(--ink);padding:9px 12px;margin-bottom:10px;outline:none;min-height:90px;resize:vertical}
 .row{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
-#lb{padding:0;background:none;border:0;width:auto;max-width:94vw}
-#lb img{max-width:94vw;max-height:88vh;border-radius:12px;display:block}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>我的收藏</h1>
   <p class="sub" id="count"></p>
-  <div class="bar">
-    <div class="tabs" id="tabs">
-      <button class="tab on" data-k="all">全部</button>
-      <button class="tab" data-k="text">文字</button>
-      <button class="tab" data-k="img">图片</button>
+
+  <div class="box">
+    <div class="tb">
+      <button data-c="fontName" data-v="song" style="font-family:'Songti SC','Noto Serif SC',SimSun,serif">宋体</button>
+      <button data-c="fontName" data-v="hei" style="font-family:'PingFang SC','Microsoft YaHei',sans-serif">黑体</button>
+      <button data-c="fontName" data-v="kai" style="font-family:'Kaiti SC',STKaiti,KaiTi,serif">楷体</button>
+      <span class="sep"></span>
+      <button data-c="bold" style="font-weight:700">B</button>
+      <span class="sep"></span>
+      <button class="dot" data-c="foreColor" data-v="#2d3b2f" title="墨绿"></button>
+      <button class="dot" data-c="foreColor" data-v="#c0504d" title="红"></button>
+      <button class="dot" data-c="foreColor" data-v="#3b6ea5" title="蓝"></button>
+      <button class="dot" data-c="foreColor" data-v="#c98a2b" title="橙"></button>
+      <button class="dot" data-c="foreColor" data-v="#7a5aa6" title="紫"></button>
+      <span class="sep"></span>
+      <button id="pic">插入图片</button>
+      <span id="szw" hidden>图片大小 <input type="range" id="sz" min="10" max="100" value="60"></span>
+      <input type="file" id="fi" accept="image/*" hidden>
     </div>
-    <input class="search" id="q" placeholder="搜索内容或标签">
-    <button class="btn" id="add">＋ 添加</button>
+    <div id="ed" contenteditable="true" data-ph="在这里直接写点什么，也可以插入图片……"></div>
+    <div class="foot"><span>点击图片可以调整大小</span><button class="btn" id="save">保存</button></div>
   </div>
-  <div class="grid" id="grid"></div>
-  <div class="empty" id="empty" hidden>还没有内容，点右上角“添加”开始收藏。</div>
+
+  <div class="bar">
+    <div style="display:flex;gap:4px" id="tabs">
+      <button class="tab on" data-k="all">全部</button>
+      <button class="tab" data-k="img">含图片</button>
+      <button class="tab" data-k="en">有英文版</button>
+    </div>
+    <input class="search" id="q" placeholder="搜索内容">
+  </div>
+  <div id="list"></div>
+  <div class="empty" id="empty" hidden>没有符合条件的内容。</div>
   <footer>
     <button class="btn ghost" id="exp">导出备份</button>
     <button class="btn ghost" id="imp">导入备份</button>
@@ -72,110 +102,222 @@ textarea.f{min-height:110px;resize:vertical}
   </footer>
 </div>
 
-<dialog id="dlg">
-  <h2>添加收藏</h2>
-  <input class="f" id="ft" placeholder="标题（可选）">
-  <textarea class="f" id="fx" placeholder="写点文字…"></textarea>
-  <input class="f" id="fg" placeholder="标签（可选）">
-  <img class="prev" id="prev" alt="">
-  <input type="file" id="fi" accept="image/*" class="f">
-  <div class="row">
-    <button class="btn ghost" id="cancel">取消</button>
-    <button class="btn" id="save">保存</button>
-  </div>
+<dialog id="odlg">
+  <h2>要生成英文版吗？</h2>
+  <p>可以把这段文字改写成适合练口语和英文作文的英文版。生成后能左右滑动切换中文 / 英文，也能一段中文一段英文对照着读。</p>
+  <div class="row"><button class="btn ghost" id="ono">不需要</button><button class="btn" id="oyes">生成英文版</button></div>
 </dialog>
-<dialog id="lb"><img id="lbi" alt=""></dialog>
+
+<dialog id="gdlg">
+  <h2>英文版</h2>
+  <p id="gmsg"></p>
+  <div id="gman" hidden>
+    <textarea class="f" id="gprompt" readonly></textarea>
+    <div class="row" style="margin:0 0 10px"><button class="btn ghost" id="gcopy">复制提示词</button></div>
+    <textarea class="f" id="gin" placeholder="把 Claude 给你的英文粘贴到这里，一段英文对应一段中文"></textarea>
+  </div>
+  <div class="row"><button class="btn ghost" id="gcancel">取消</button><button class="btn" id="gsave" hidden>保存英文版</button></div>
+</dialog>
 
 <script>
 (function(){
-  var KEY='my-collection-v1', items=[], filter='all', imgData='';
-  var $=function(id){return document.getElementById(id)};
-
+  var KEY='my-collection-v2', items=[], filter='all', sel=null, range=null, SAMPLE=null, genTok=0, curId=null;
+  var $=function(id){return document.getElementById(id)}, ed=$('ed');
+  var FONTS={song:'"Songti SC","Noto Serif SC",SimSun,serif',hei:'"PingFang SC","Microsoft YaHei",sans-serif',kai:'"Kaiti SC",STKaiti,KaiTi,serif'};
+  function el(t,c){var e=document.createElement(t);if(c)e.className=c;return e}
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function clean(html){
+    var d=new DOMParser().parseFromString('<body>'+html,'text/html');
+    d.querySelectorAll('script,style,iframe,object,embed,link,meta').forEach(function(n){n.remove()});
+    d.body.querySelectorAll('*').forEach(function(e){
+      Array.prototype.slice.call(e.attributes).forEach(function(a){
+        if(a.name.toLowerCase().slice(0,2)==='on'||/^\s*javascript:/i.test(a.value))e.removeAttribute(a.name);
+      });
+    });
+    return d.body.innerHTML;
+  }
+  function plain(html){
+    var d=el('div');d.style.cssText='position:absolute;left:-9999px;top:0;width:600px;white-space:pre-wrap';
+    d.innerHTML=html;document.body.appendChild(d);
+    var t=d.innerText||d.textContent||'';d.remove();
+    return t.split(/\n+/).map(function(s){return s.trim()}).filter(Boolean);
+  }
+  function migrate(x){
+    var h=(x.title?'<div><b>'+esc(x.title)+'</b></div>':'')+(x.text?String(x.text).split('\n').map(function(l){return '<div>'+esc(l)+'</div>'}).join(''):'')+(x.img?'<div><img src="'+x.img+'" style="width:100%"></div>':'');
+    return {id:x.id,t:x.t,html:h,zh:plain(h),en:null};
+  }
   function load(){
     try{items=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){items=null}
     if(!Array.isArray(items)){
-      items=[
-        {id:'s1',title:'欢迎',text:'这里是你的个人收藏夹。\n可以记录一句话、一段想法，也可以收藏图片。',tag:'示例',img:'',t:Date.now()},
-        {id:'s2',title:'小提示',text:'内容保存在当前浏览器里。换设备前，请先点页面底部的“导出备份”。',tag:'示例',img:'',t:Date.now()-1}
-      ];
+      items=[];
+      try{var o=JSON.parse(localStorage.getItem('my-collection-v1')||'null');
+        if(Array.isArray(o))items=o.filter(function(x){return x.id!=='s1'&&x.id!=='s2'}).map(migrate)}catch(e){}
+      if(!items.length){var h='<div><b>欢迎</b></div><div>在上面的输入框直接写字、插入图片，写完点“保存”就能收藏。</div>';
+        items=[{id:'s1',t:Date.now(),html:h,zh:plain(h),en:null}]}
     }
   }
   function persist(){
     try{localStorage.setItem(KEY,JSON.stringify(items));return true}
-    catch(e){alert('保存失败：浏览器存储空间已满。请先导出备份，再删除一些图片。');return false}
+    catch(e){alert('保存失败：浏览器存储空间已满。请先导出备份，再删除一些带图片的内容。');return false}
   }
   function fmt(t){var d=new Date(t);return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()}
 
+  function card(it){
+    var c=el('article','item'), snap=el('div','snap');
+    var p1=el('div','panel rich');p1.innerHTML=clean(it.html);snap.appendChild(p1);
+    if(it.en){
+      var p2=el('div','panel en');it.en.forEach(function(s){var p=el('p');p.textContent=s;p2.appendChild(p)});
+      var p3=el('div','panel mix'), n=Math.max(it.zh.length,it.en.length);
+      for(var i=0;i<n;i++){
+        if(it.zh[i]){var a=el('p','zhl');a.textContent=it.zh[i];p3.appendChild(a)}
+        if(it.en[i]){var b=el('p','enl');b.textContent=it.en[i];p3.appendChild(b)}
+      }
+      snap.appendChild(p2);snap.appendChild(p3);
+      var tabs=el('div','tabs3');
+      ['中文','English','对照'].forEach(function(name,k){
+        var bt=el('button','tab'+(k?'':' on'));bt.textContent=name;
+        bt.onclick=function(){snap.scrollTo({left:k*snap.clientWidth,behavior:'smooth'})};
+        tabs.appendChild(bt);
+      });
+      snap.onscroll=function(){
+        var k=Math.round(snap.scrollLeft/Math.max(1,snap.clientWidth));
+        Array.prototype.forEach.call(tabs.children,function(x,j){x.classList.toggle('on',j===k)});
+      };
+      c.appendChild(tabs);
+    }
+    c.appendChild(snap);
+    var m=el('div','meta'), d=el('span');d.textContent=fmt(it.t);m.appendChild(d);
+    var r=el('span');r.style.cssText='display:flex;gap:8px';
+    if(!it.en&&it.zh.length){var g=el('button','btn ghost');g.textContent='生成英文版';g.onclick=function(){openGen(it.id)};r.appendChild(g)}
+    var x=el('button','btn ghost');x.textContent='删除';
+    x.onclick=function(){if(confirm('删除这条收藏？')){items=items.filter(function(i){return i.id!==it.id});persist();render()}};
+    r.appendChild(x);m.appendChild(r);c.appendChild(m);
+    return c;
+  }
   function render(){
-    var q=$('q').value.trim().toLowerCase(), g=$('grid');
-    g.innerHTML='';
+    var q=$('q').value.trim().toLowerCase(), g=$('list');g.innerHTML='';
     var list=items.filter(function(it){
-      if(filter==='text'&&it.img)return false;
-      if(filter==='img'&&!it.img)return false;
-      return !q||((it.title||'')+(it.text||'')+(it.tag||'')).toLowerCase().indexOf(q)>-1;
+      if(filter==='img'&&it.html.indexOf('<img')<0)return false;
+      if(filter==='en'&&!it.en)return false;
+      return !q||(it.zh.join(' ')+' '+(it.en||[]).join(' ')).toLowerCase().indexOf(q)>-1;
     }).sort(function(a,b){return b.t-a.t});
-    list.forEach(function(it){
-      var c=document.createElement('article');c.className='item';
-      if(it.img){var im=document.createElement('img');im.src=it.img;im.alt=it.title||'';
-        im.onclick=function(){$('lbi').src=it.img;$('lb').showModal()};c.appendChild(im)}
-      var b=document.createElement('div');b.className='body';
-      if(it.title){var h=document.createElement('p');h.className='title';h.textContent=it.title;b.appendChild(h)}
-      if(it.text){var p=document.createElement('p');p.className='text';p.textContent=it.text;b.appendChild(p)}
-      var m=document.createElement('div');m.className='meta';
-      var d=document.createElement('span');d.textContent=fmt(it.t);m.appendChild(d);
-      if(it.tag){var tg=document.createElement('span');tg.className='tag';tg.textContent=it.tag;m.appendChild(tg)}
-      b.appendChild(m);c.appendChild(b);
-      var x=document.createElement('button');x.className='del';x.textContent='×';x.title='删除';
-      x.onclick=function(){if(confirm('删除这条收藏？')){items=items.filter(function(i){return i.id!==it.id});persist();render()}};
-      c.appendChild(x);g.appendChild(c);
-    });
+    list.forEach(function(it){g.appendChild(card(it))});
     $('empty').hidden=list.length>0;
     $('count').textContent='共 '+items.length+' 条收藏';
   }
-
-  document.querySelectorAll('.tab').forEach(function(b){
-    b.onclick=function(){
-      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
-      b.classList.add('on');filter=b.dataset.k;render();
-    };
-  });
+  $('tabs').onclick=function(e){
+    var b=e.target.closest('.tab');if(!b)return;
+    Array.prototype.forEach.call($('tabs').children,function(x){x.classList.remove('on')});
+    b.classList.add('on');filter=b.dataset.k;render();
+  };
   $('q').oninput=render;
 
-  function resetForm(){['ft','fx','fg','fi'].forEach(function(i){$(i).value=''});imgData='';$('prev').style.display='none'}
-  $('add').onclick=function(){resetForm();$('dlg').showModal()};
-  $('cancel').onclick=function(){$('dlg').close()};
-
+  /* ---------- editor ---------- */
+  document.querySelectorAll('.tb [data-c]').forEach(function(b){
+    if(b.dataset.c==='foreColor')b.style.background=b.dataset.v;
+    b.onmousedown=function(e){e.preventDefault()};
+    b.onclick=function(){
+      ed.focus();document.execCommand('styleWithCSS',false,true);
+      var v=b.dataset.v;if(b.dataset.c==='fontName')v=FONTS[v];
+      document.execCommand(b.dataset.c,false,v||null);
+    };
+  });
+  function saveR(){var s=getSelection();if(s.rangeCount&&ed.contains(s.anchorNode))range=s.getRangeAt(0).cloneRange()}
+  ['keyup','mouseup','blur'].forEach(function(ev){ed.addEventListener(ev,saveR)});
+  ed.addEventListener('input',function(){if(ed.innerHTML==='<br>')ed.innerHTML=''});
+  ed.addEventListener('paste',function(e){
+    e.preventDefault();
+    var t=(e.clipboardData||window.clipboardData).getData('text/plain');
+    document.execCommand('insertText',false,t);
+  });
+  function unpick(){if(sel)sel.classList.remove('sel');sel=null;$('szw').hidden=true}
+  function pick(im){
+    if(sel)sel.classList.remove('sel');
+    sel=im;im.classList.add('sel');
+    $('sz').value=Math.max(10,Math.min(100,Math.round(im.getBoundingClientRect().width/Math.max(1,ed.clientWidth)*100)));
+    $('szw').hidden=false;
+  }
+  ed.addEventListener('click',function(e){if(e.target.tagName==='IMG')pick(e.target);else unpick()});
+  $('sz').oninput=function(){if(sel)sel.style.width=$('sz').value+'%'};
+  $('pic').onmousedown=function(e){e.preventDefault()};
+  $('pic').onclick=function(){$('fi').click()};
   $('fi').onchange=function(e){
     var f=e.target.files[0];if(!f)return;
     var r=new FileReader();
     r.onload=function(){
       var im=new Image();
       im.onload=function(){
-        var s=Math.min(1,1000/Math.max(im.width,im.height)),c=document.createElement('canvas');
+        var s=Math.min(1,1000/Math.max(im.width,im.height)),c=el('canvas');
         c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);
         c.getContext('2d').drawImage(im,0,0,c.width,c.height);
-        imgData=c.toDataURL('image/jpeg',.8);
-        $('prev').src=imgData;$('prev').style.display='block';
+        insertImg(c.toDataURL('image/jpeg',.8));
       };
       im.src=r.result;
     };
-    r.readAsDataURL(f);
+    r.readAsDataURL(f);e.target.value='';
   };
-
+  function insertImg(src){
+    ed.focus();var s=getSelection(),r;
+    if(range){s.removeAllRanges();s.addRange(range)}
+    else{r=document.createRange();r.selectNodeContents(ed);r.collapse(false);s.removeAllRanges();s.addRange(r)}
+    r=s.getRangeAt(0);r.deleteContents();
+    var im=el('img');im.src=src;im.style.width='60%';
+    var br=el('br');r.insertNode(br);r.insertNode(im);
+    r.setStartAfter(br);r.collapse(true);s.removeAllRanges();s.addRange(r);saveR();pick(im);
+  }
   $('save').onclick=function(){
-    var t=$('ft').value.trim(),x=$('fx').value.trim(),g=$('fg').value.trim();
-    if(!t&&!x&&!imgData){alert('请至少填写文字或选择一张图片');return}
-    items.push({id:Date.now()+''+Math.floor(Math.random()*1000),title:t,text:x,tag:g,img:imgData,t:Date.now()});
-    if(persist()){$('dlg').close();render()}else{items.pop()}
+    var c=ed.cloneNode(true);c.querySelectorAll('.sel').forEach(function(i){i.classList.remove('sel')});
+    var html=clean(c.innerHTML), zh=plain(html);
+    if(!zh.length&&html.indexOf('<img')<0){alert('请先写点文字或插入图片');return}
+    var it={id:Date.now()+''+Math.floor(Math.random()*1000),t:Date.now(),html:html,zh:zh,en:null};
+    items.push(it);
+    if(!persist()){items.pop();return}
+    ed.innerHTML='';range=null;unpick();render();
+    if(zh.length){curId=it.id;$('odlg').showModal()}
   };
 
-  $('lb').onclick=function(){$('lb').close()};
+  /* ---------- English version ---------- */
+  $('ono').onclick=function(){$('odlg').close()};
+  $('oyes').onclick=function(){$('odlg').close();openGen(curId)};
+  function openGen(id){
+    var it=items.find(function(x){return x.id===id});if(!it)return;
+    var tok=++genTok, N=it.zh.length;
+    var base='请把下面每一段中文改写成自然、地道的英文，适合用来练习英语口语和英文作文：句子简洁清晰，表达口语化但规范，难度大约 CEFR B1–B2，保留原意和语气。要求逐段对应：一段中文对应一段英文，不要合并或拆分段落，不要加任何解释。\n\n中文共 '+N+' 段：\n'+it.zh.map(function(s,i){return (i+1)+'. '+s}).join('\n')+'\n\n';
+    function manual(msg){
+      $('gmsg').textContent=msg;$('gprompt').value=base+'请按相同顺序逐段输出英文，每段之间空一行。';
+      $('gin').value='';$('gman').hidden=false;$('gsave').hidden=false;
+    }
+    $('gsave').onclick=function(){
+      var lines=$('gin').value.split(/\n+/).map(function(s){return s.replace(/^\s*\d+[.、)]\s*/,'').trim()}).filter(Boolean);
+      if(!lines.length){alert('请先粘贴英文内容');return}
+      it.en=lines;persist();render();$('gdlg').close();
+    };
+    $('gdlg').showModal();
+    $('gman').hidden=true;$('gsave').hidden=true;
+    if(SAMPLE){
+      $('gmsg').textContent='正在生成英文版，可能需要几十秒……';
+      SAMPLE.json(base+'只返回一个 JSON 字符串数组，长度必须是 '+N+'，不要使用代码块标记。').then(function(arr){
+        if(tok!==genTok)return;
+        if(!Array.isArray(arr)||!arr.length)throw 0;
+        it.en=arr.map(String);persist();render();$('gdlg').close();
+      }).catch(function(){
+        if(tok!==genTok)return;
+        manual('自动生成没有成功。你可以复制下面的提示词发给 Claude，再把英文粘贴回来。');
+      });
+    }else manual('这里不能自动生成。复制下面的提示词发给 Claude，再把得到的英文粘贴回来。');
+  }
+  $('gcancel').onclick=function(){genTok++;$('gdlg').close()};
+  $('gcopy').onclick=function(){
+    $('gprompt').select();
+    try{navigator.clipboard.writeText($('gprompt').value)}catch(e){document.execCommand('copy')}
+    $('gcopy').textContent='已复制';setTimeout(function(){$('gcopy').textContent='复制提示词'},1500);
+  };
 
+  /* ---------- backup ---------- */
   $('exp').onclick=function(){
     var json=JSON.stringify(items);
     function fallback(){
-      var a=document.createElement('a');
-      a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));
+      var a=el('a');a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));
       a.download='收藏备份.json';a.click();
     }
     if(window.claude&&claude.use){
@@ -192,12 +334,14 @@ textarea.f{min-height:110px;resize:vertical}
     r.onload=function(){
       try{
         var d=JSON.parse(r.result);if(!Array.isArray(d))throw 0;
+        d=d.map(function(x){return x.html?x:migrate(x)});
         if(confirm('导入将覆盖当前所有收藏，继续吗？')){items=d;persist();render()}
       }catch(err){alert('备份文件格式不正确')}
     };
     r.readAsText(f);e.target.value='';
   };
 
+  if(window.claude&&claude.use){claude.use('sample').then(function(f){SAMPLE=f}).catch(function(){})}
   load();render();
 })();
 </script>
