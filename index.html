@@ -98,6 +98,7 @@ dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
   <footer>
     <button class="btn ghost" id="exp">导出备份</button>
     <button class="btn ghost" id="imp">导入备份</button>
+    <button class="btn ghost" id="cfg">英文生成设置</button>
     <input type="file" id="impf" accept="application/json" hidden>
   </footer>
 </div>
@@ -121,7 +122,7 @@ dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
 
 <script>
 (function(){
-  var KEY='my-collection-v2', items=[], filter='all', sel=null, range=null, SAMPLE=null, genTok=0, curId=null;
+  var KEY='my-collection-v2', items=[], filter='all', sel=null, range=null, SAMPLE=null, genTok=0, curId=null, RELAY='';
   var $=function(id){return document.getElementById(id)}, ed=$('ed');
   var FONTS={song:'"Songti SC","Noto Serif SC",SimSun,serif',hei:'"PingFang SC","Microsoft YaHei",sans-serif',kai:'"Kaiti SC",STKaiti,KaiTi,serif'};
   function el(t,c){var e=document.createElement(t);if(c)e.className=c;return e}
@@ -294,9 +295,30 @@ dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
     };
     $('gdlg').showModal();
     $('gman').hidden=true;$('gsave').hidden=true;
-    if(SAMPLE){
-      $('gmsg').textContent='正在生成英文版，可能需要几十秒……';
-      SAMPLE.json(base+'只返回一个 JSON 字符串数组，长度必须是 '+N+'，不要使用代码块标记。').then(function(arr){
+    var job=null;
+    if(SAMPLE)job=function(){return SAMPLE.json(base+'只返回一个 JSON 字符串数组，长度必须是 '+N+'，不要使用代码块标记。')};
+    else if(RELAY)job=function(){
+      return fetch(RELAY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paras:it.zh})})
+        .then(function(r){return r.json()}).then(function(d){return d.en});
+    };
+    if(!job&&'Translator' in self)job=function(){
+      var o={sourceLanguage:'zh',targetLanguage:'en'};
+      return Translator.availability(o).then(function(a){
+        if(a==='unavailable')throw 0;
+        o.monitor=function(m){m.addEventListener('downloadprogress',function(e){
+          $('gmsg').textContent='正在下载浏览器翻译模型 '+Math.round(e.loaded*100)+'% ……（只需要下载一次）';
+        })};
+        return Translator.create(o);
+      }).then(function(t){
+        var out=[];
+        return it.zh.reduce(function(p,s){
+          return p.then(function(){return t.translate(s)}).then(function(x){out.push(x)});
+        },Promise.resolve()).then(function(){return out});
+      });
+    };
+    if(job){
+      $('gmsg').textContent='正在生成英文版，请稍等……（第一次使用浏览器翻译需要先下载模型）';
+      job().then(function(arr){
         if(tok!==genTok)return;
         if(!Array.isArray(arr)||!arr.length)throw 0;
         it.en=arr.map(String);persist();render();$('gdlg').close();
@@ -304,7 +326,7 @@ dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
         if(tok!==genTok)return;
         manual('自动生成没有成功。你可以复制下面的提示词发给 Claude，再把英文粘贴回来。');
       });
-    }else manual('这里不能自动生成。复制下面的提示词发给 Claude，再把得到的英文粘贴回来。');
+    }else manual('当前浏览器不支持内置翻译（需要电脑版 Chrome 138 以上或 Edge 148 以上）。可以复制下面的提示词发给 Claude，再把得到的英文粘贴回来。');
   }
   $('gcancel').onclick=function(){genTok++;$('gdlg').close()};
   $('gcopy').onclick=function(){
@@ -341,6 +363,15 @@ dialog p{margin:0 0 14px;color:var(--sub);font-size:14px}
     r.readAsText(f);e.target.value='';
   };
 
+  try{RELAY=localStorage.getItem('relay-url')||''}catch(e){}
+  $('cfg').onclick=function(){
+    var v=prompt('填入中转地址（以 https:// 开头）。留空则清除：',RELAY);
+    if(v===null)return;
+    v=v.trim();
+    if(v&&!/^https:\/\//.test(v)){alert('地址需要以 https:// 开头');return}
+    RELAY=v;try{localStorage.setItem('relay-url',v)}catch(e){}
+  };
+  if(window.claude)$('cfg').hidden=true;
   if(window.claude&&claude.use){claude.use('sample').then(function(f){SAMPLE=f}).catch(function(){})}
   load();render();
 })();
